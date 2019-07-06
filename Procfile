@@ -1,1 +1,1 @@
-web: python3 BOTXO.ipynb
+web: python BOTXO.ipynb
