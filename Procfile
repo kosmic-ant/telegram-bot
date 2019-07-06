@@ -1,1 +1,1 @@
-worker: python BOTXO.ipynb
+bot: python BOTXO.ipynb
