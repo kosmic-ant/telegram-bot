@@ -1,1 +1,1 @@
-bot: python3 BOTXO.py
+bot: python3 bot.py
