@@ -1,217 +1,173 @@
-{
- "cells": [
-  {
-   "cell_type": "code",
-   "metadata": {},
-   "outputs": [],
-   "source": [
-    "import telebot, random\n",
-    "bot = telebot.TeleBot('808136847:AAHLq-11VcMuPKWZvStE60_-0MgRg_Lqabs')\n",
-    "\n",
-    "@bot.message_handler(content_types=['text', 'document', 'audio', 'photo'])\n",
-    "\n",
-    "def start(message):\n",
-    "    if message.text.lower() == '/start':\n",
-    "        bot.send_message(message.from_user.id, 'Now your are going to play KRESTIKI NOLIKI with the most powerfull AI in the UNIRVERSE. Be prepared and try not to shit your pants')\n",
-    "        bot.send_message(message.from_user.id, \"Please choose a marker 'X' or 'O'\")\n",
-    "        bot.register_next_step_handler(message, game)\n",
-    "    else:\n",
-    "        bot.send_message(message.from_user.id, \"Please enter '/Start' to play\")\n",
-    "        \n",
-    "def game(message):\n",
-    "    global player1, player2, numbers\n",
-    "    if message.text.upper() == \"X\" or message.text.upper() == \"O\":\n",
-    "        player1 = message.text.upper()\n",
-    "        \n",
-    "        if player1 == 'X':\n",
-    "            player2 = 'O'\n",
-    "        else:\n",
-    "            player2 = 'X'\n",
-    "        bot.send_message(message.from_user.id, f'Great choice, looser! Now the GAME begins! Choose from 1 to 9 to place your {player1} sign')\n",
-    "        numbers = [1,2,3,4,5,6,7,8,9]\n",
-    "        n = 0\n",
-    "        while n <= 6:\n",
-    "            pole = {1: '|          |          |          |',\n",
-    "                2: '-------------------', 3: \n",
-    "                '|{:^9}|{:^9}|{:^9}|'.format(numbers[n], numbers[n + 1], numbers[n + 2])}\n",
-    "            if n == 6:\n",
-    "                bot.send_message(message.from_user.id, pole[3])\n",
-    "            else:\n",
-    "                bot.send_message(message.from_user.id, pole[3])\n",
-    "                #bot.send_message(message.from_user.id, pole[2])\n",
-    "            n += 3\n",
-    "        numbers =[' ']*9\n",
-    "        bot.send_message(message.from_user.id,'If you are ready to start, Player1, please, enter the number where you want to put your {}\\n'.format(player1))\n",
-    "        bot.register_next_step_handler(message, game1)\n",
-    "    \n",
-    "    elif message.text == '/Start':\n",
-    "        bot.register_next_step_handler(message, start)\n",
-    "    else:\n",
-    "        bot.send_message(message.from_user.id, 'Wrong input, please try again')\n",
-    "        bot.register_next_step_handler(message, game)\n",
-    "    \n",
-    "def game1(message):\n",
-    "    global numbers, player1, player2\n",
-    "    n = 0\n",
-    "    \n",
-    "    if message.text == '/Start':\n",
-    "        bot.register_next_step_handler(message, start)\n",
-    "        \n",
-    "    position = int(message.text)\n",
-    "        \n",
-    "    if int(message.text) > 9 or int(message.text) < 1:\n",
-    "        bot.send_message(message.from_user.id, 'Wrong input, please try again')\n",
-    "        bot.register_next_step_handler(message, game1)\n",
-    "    \n",
-    "    elif numbers[position - 1] == player1 or numbers[position - 1] == player2:\n",
-    "        bot.send_message(message.from_user.id, 'The CELL is already BUSY, you IDIOT! Again!')\n",
-    "        bot.register_next_step_handler(message, game1)\n",
-    "    \n",
-    "    else:\n",
-    "        numbers.pop(position - 1)\n",
-    "        numbers.insert(position - 1, player1)\n",
-    "\n",
-    "        while n <= 6:\n",
-    "            pole = {1: '|          |          |          |',\n",
-    "            2: '-------------------', 3: \n",
-    "            '|{:^9}|{:^9}|{:^9}|'.format(numbers[n], numbers[n + 1], numbers[n + 2])}\n",
-    "            if n == 6:\n",
-    "                bot.send_message(message.from_user.id, pole[3])\n",
-    "            else:\n",
-    "                bot.send_message(message.from_user.id, pole[3])\n",
-    "                #bot.send_message(message.from_user.id, pole[2])\n",
-    "            n += 3\n",
-    "        if (numbers[0] + numbers[1] + numbers[2] == player1 * 3) or\\\n",
-    "            (numbers[3] + numbers[4] + numbers[5] == player1 * 3) or\\\n",
-    "            (numbers[6] + numbers[7] + numbers[8] == player1 * 3) or\\\n",
-    "            (numbers[0] + numbers[3] + numbers[6] == player1 * 3) or\\\n",
-    "            (numbers[1] + numbers[4] + numbers[7] == player1 * 3) or\\\n",
-    "            (numbers[2] + numbers[5] + numbers[8] == player1 * 3) or\\\n",
-    "            (numbers[0] + numbers[4] + numbers[8] == player1 * 3) or\\\n",
-    "            (numbers[2] + numbers[4] + numbers[6] == player1 * 3):\n",
-    "            bot.send_message(message.from_user.id,'Congratulations! You are GENIUS! Want to play again?')\n",
-    "            bot.register_next_step_handler(message, start)\n",
-    "        elif numbers.count(' ') == 0:\n",
-    "            bot.send_message(message.from_user.id,'Parity! Want to play again? Yes / No')\n",
-    "            bot.register_next_step_handler(message, other)\n",
-    "            \n",
-    "        else:\n",
-    "            bot.send_message(message.from_user.id,\"Now, AI will make it's turn. Wait and shake, human!\")\n",
-    "\n",
-    "            n = 0\n",
-    "    \n",
-    "            if numbers[4] == ' ':\n",
-    "                position2 = 5\n",
-    "            elif numbers[0] == player1 and numbers[2] == player1 and numbers[1] == ' ':\n",
-    "                position2 = 2\n",
-    "            elif numbers[0] == player1 and numbers[6] == player1 and numbers[3] == ' ':\n",
-    "                position2 = 4\n",
-    "            elif numbers[2] == player1 and numbers[8] == player1 and numbers[5] == ' ':\n",
-    "                position2 = 6\n",
-    "            elif numbers[6] == player1 and numbers[8] == player1 and numbers[7] == ' ':\n",
-    "                position2 = 8\n",
-    "            elif numbers[0] == player1 and numbers[4] == player1 and numbers[8] == ' ':\n",
-    "                position2 = 9\n",
-    "            elif numbers[8] == player1 and numbers[4] == player1 and numbers[0] == ' ':\n",
-    "                position2 = 1\n",
-    "            elif numbers[2] == player1 and numbers[4] == player1 and numbers[6] == ' ':\n",
-    "                position2 = 7\n",
-    "            elif numbers[6] == player1 and numbers[4] == player1 and numbers[2] == ' ':\n",
-    "                position2 = 3\n",
-    "            elif numbers[3] == player1 and numbers[4] == player1 and numbers[5] == ' ':\n",
-    "                position2 = 6\n",
-    "            elif numbers[5] == player1 and numbers[4] == player1 and numbers[3] == ' ':\n",
-    "                position2 = 4\n",
-    "            elif numbers[1] == player1 and numbers[4] == player1 and numbers[7] == ' ':\n",
-    "                position2 = 8\n",
-    "            elif numbers[7] == player1 and numbers[4] == player1 and numbers[1] == ' ':\n",
-    "                position2 = 2\n",
-    "            elif numbers[4] != ' ' and numbers[0] == ' ':\n",
-    "                position2 = 1\n",
-    "            elif numbers[4] != ' ' and numbers[2] == ' ':\n",
-    "                position2 = 3\n",
-    "            elif numbers[4] != ' ' and numbers[6] == ' ':\n",
-    "                position2 = 7\n",
-    "            elif numbers[4] != ' ' and numbers[8] == ' ':\n",
-    "                position2 = 9\n",
-    "            else:\n",
-    "                position2 = random.randint(1, 9)\n",
-    "\n",
-    "            while numbers[position2 - 1] == player1 or numbers[position2 - 1] == player2:\n",
-    "                position2 = random.randint(1, 9)\n",
-    "                \n",
-    "            numbers.pop(position2 - 1)\n",
-    "            numbers.insert(position2 - 1, player2)\n",
-    "\n",
-    "            while n <= 6:\n",
-    "                pole = {1: '|          |          |          |',\n",
-    "                2: '-------------------', 3: \n",
-    "                '|{:^9}|{:^9}|{:^9}|'.format(numbers[n], numbers[n + 1], numbers[n + 2])}\n",
-    "                if n == 6:\n",
-    "                    bot.send_message(message.from_user.id, pole[3])\n",
-    "                else:\n",
-    "                    bot.send_message(message.from_user.id, pole[3])\n",
-    "                    #bot.send_message(message.from_user.id, pole[2])\n",
-    "                n += 3\n",
-    "\n",
-    "            if (numbers[0] + numbers[1] + numbers[2] == player2 * 3) or\\\n",
-    "                (numbers[3] + numbers[4] + numbers[5] == player2 * 3) or\\\n",
-    "                (numbers[6] + numbers[7] + numbers[8] == player2 * 3) or\\\n",
-    "                (numbers[0] + numbers[3] + numbers[6] == player2 * 3) or\\\n",
-    "                (numbers[1] + numbers[4] + numbers[7] == player2 * 3) or\\\n",
-    "                (numbers[2] + numbers[5] + numbers[8] == player2 * 3) or\\\n",
-    "                (numbers[0] + numbers[4] + numbers[8] == player2 * 3) or\\\n",
-    "                (numbers[2] + numbers[4] + numbers[6] == player2 * 3):\n",
-    "                bot.send_message(message.from_user.id,'Congratulations! You are an IDIOT! Want to play again?')\n",
-    "                bot.register_next_step_handler(message, start)\n",
-    "            elif numbers.count(' ') == 0:\n",
-    "                bot.send_message(message.from_user.id,'Parity! Want to play again? Yes / No')\n",
-    "                bot.register_next_step_handler(message, other)\n",
-    "            else:\n",
-    "                bot.send_message(message.from_user.id,\"Please input the number where you want to put {}\".format(player1))\n",
-    "                bot.register_next_step_handler(message, game1)\n",
-    "                \n",
-    "def other(message):\n",
-    "    if message.text.lower() == 'no':\n",
-    "        bot.send_photo(message.from_user.id, 'http://www.избавься.рф/image/362897/nyitik.jpg')\n",
-    "    else:\n",
-    "        bot.register_next_step_handler(message, start)\n",
-    "\n",
-    "bot.polling(none_stop=True, interval=0)"
-   ]
-  },
-  {
-   "cell_type": "code",
-   "metadata": {},
-   "outputs": [],
-   "source": []
-  },
-  {
-   "cell_type": "code",
-   "metadata": {},
-   "outputs": [],
-   "source": []
-  }
- ],
- "metadata": {
-  "kernelspec": {
-   "display_name": "Python 3",
-   "language": "python",
-   "name": "python3"
-  },
-  "language_info": {
-   "codemirror_mode": {
-    "name": "ipython",
-    "version": 3
-   },
-   "file_extension": ".py",
-   "mimetype": "text/x-python",
-   "name": "python",
-   "nbconvert_exporter": "python",
-   "pygments_lexer": "ipython3",
-   "version": "3.7.3"
-  }
- },
- "nbformat": 4,
- "nbformat_minor": 2
-}
+import telebot, random
+bot = telebot.TeleBot('808136847:AAHLq-11VcMuPKWZvStE60_-0MgRg_Lqabs')
+
+@bot.message_handler(content_types=['text', 'document', 'audio', 'photo'])
+
+def start(message):
+    if message.text.lower() == '/start':
+        bot.send_message(message.from_user.id, 'Now your are going to play KRESTIKI NOLIKI with the most powerfull AI in the UNIRVERSE. Be prepared and try not to shit your pants')
+        bot.send_message(message.from_user.id, "Please choose a marker 'X' or 'O'")
+        bot.register_next_step_handler(message, game)
+    else:
+        bot.send_message(message.from_user.id, "Please enter '/Start' to play")
+        
+def game(message):
+    global player1, player2, numbers
+    if message.text.upper() == "X" or message.text.upper() == "O":
+        player1 = message.text.upper()
+        
+        if player1 == 'X':
+            player2 = 'O'
+        else:
+            player2 = 'X'
+        bot.send_message(message.from_user.id, f'Great choice, looser! Now the GAME begins! Choose from 1 to 9 to place your {player1} sign')
+        numbers = [1,2,3,4,5,6,7,8,9]
+        n = 0
+        while n <= 6:
+            pole = {1: '|          |          |          |',
+                2: '-------------------', 3: 
+                '|{:^9}|{:^9}|{:^9}|'.format(numbers[n], numbers[n + 1], numbers[n + 2])}
+            if n == 6:
+                bot.send_message(message.from_user.id, pole[3])
+            else:
+                bot.send_message(message.from_user.id, pole[3])
+                #bot.send_message(message.from_user.id, pole[2])
+            n += 3
+        numbers =[' ']*9
+        bot.send_message(message.from_user.id,'If you are ready to start, Player1, please, enter the number where you want to put your {}\n'.format(player1))
+        bot.register_next_step_handler(message, game1)
+    
+    elif message.text == '/Start':
+        bot.register_next_step_handler(message, start)
+    else:
+        bot.send_message(message.from_user.id, 'Wrong input, please try again')
+        bot.register_next_step_handler(message, game)
+    
+def game1(message):
+    global numbers, player1, player2
+    n = 0
+    
+    if message.text == '/Start':
+        bot.register_next_step_handler(message, start)
+        
+    position = int(message.text)
+        
+    if int(message.text) > 9 or int(message.text) < 1:
+        bot.send_message(message.from_user.id, 'Wrong input, please try again')
+        bot.register_next_step_handler(message, game1)
+    
+    elif numbers[position - 1] == player1 or numbers[position - 1] == player2:
+        bot.send_message(message.from_user.id, 'The CELL is already BUSY, you IDIOT! Again!')
+        bot.register_next_step_handler(message, game1)
+    
+    else:
+        numbers.pop(position - 1)
+        numbers.insert(position - 1, player1)
+
+        while n <= 6:
+            pole = {1: '|          |          |          |',
+            2: '-------------------', 3: 
+            '|{:^9}|{:^9}|{:^9}|'.format(numbers[n], numbers[n + 1], numbers[n + 2])}
+            if n == 6:
+                bot.send_message(message.from_user.id, pole[3])
+            else:
+                bot.send_message(message.from_user.id, pole[3])
+                #bot.send_message(message.from_user.id, pole[2])
+            n += 3
+        if (numbers[0] + numbers[1] + numbers[2] == player1 * 3) or\
+            (numbers[3] + numbers[4] + numbers[5] == player1 * 3) or\
+            (numbers[6] + numbers[7] + numbers[8] == player1 * 3) or\
+            (numbers[0] + numbers[3] + numbers[6] == player1 * 3) or\
+            (numbers[1] + numbers[4] + numbers[7] == player1 * 3) or\
+            (numbers[2] + numbers[5] + numbers[8] == player1 * 3) or\
+            (numbers[0] + numbers[4] + numbers[8] == player1 * 3) or\
+            (numbers[2] + numbers[4] + numbers[6] == player1 * 3):
+            bot.send_message(message.from_user.id,'Congratulations! You are GENIUS! Want to play again?')
+            bot.register_next_step_handler(message, start)
+        elif numbers.count(' ') == 0:
+            bot.send_message(message.from_user.id,'Parity! Want to play again? Yes / No')
+            bot.register_next_step_handler(message, other)
+            
+        else:
+            bot.send_message(message.from_user.id,"Now, AI will make it's turn. Wait and shake, human!")
+
+            n = 0
+    
+            if numbers[4] == ' ':
+                position2 = 5
+            elif numbers[0] == player1 and numbers[2] == player1 and numbers[1] == ' ':
+                position2 = 2
+            elif numbers[0] == player1 and numbers[6] == player1 and numbers[3] == ' ':
+                position2 = 4
+            elif numbers[2] == player1 and numbers[8] == player1 and numbers[5] == ' ':
+                position2 = 6
+            elif numbers[6] == player1 and numbers[8] == player1 and numbers[7] == ' ':
+                position2 = 8
+            elif numbers[0] == player1 and numbers[4] == player1 and numbers[8] == ' ':
+                position2 = 9
+            elif numbers[8] == player1 and numbers[4] == player1 and numbers[0] == ' ':
+                position2 = 1
+            elif numbers[2] == player1 and numbers[4] == player1 and numbers[6] == ' ':
+                position2 = 7
+            elif numbers[6] == player1 and numbers[4] == player1 and numbers[2] == ' ':
+                position2 = 3
+            elif numbers[3] == player1 and numbers[4] == player1 and numbers[5] == ' ':
+                position2 = 6
+            elif numbers[5] == player1 and numbers[4] == player1 and numbers[3] == ' ':
+                position2 = 4
+            elif numbers[1] == player1 and numbers[4] == player1 and numbers[7] == ' ':
+                position2 = 8
+            elif numbers[7] == player1 and numbers[4] == player1 and numbers[1] == ' ':
+                position2 = 2
+            elif numbers[4] != ' ' and numbers[0] == ' ':
+                position2 = 1
+            elif numbers[4] != ' ' and numbers[2] == ' ':
+                position2 = 3
+            elif numbers[4] != ' ' and numbers[6] == ' ':
+                position2 = 7
+            elif numbers[4] != ' ' and numbers[8] == ' ':
+                position2 = 9
+            else:
+                position2 = random.randint(1, 9)
+
+            while numbers[position2 - 1] == player1 or numbers[position2 - 1] == player2:
+                position2 = random.randint(1, 9)
+                
+            numbers.pop(position2 - 1)
+            numbers.insert(position2 - 1, player2)
+
+            while n <= 6:
+                pole = {1: '|          |          |          |',
+                2: '-------------------', 3: 
+                '|{:^9}|{:^9}|{:^9}|'.format(numbers[n], numbers[n + 1], numbers[n + 2])}
+                if n == 6:
+                    bot.send_message(message.from_user.id, pole[3])
+                else:
+                    bot.send_message(message.from_user.id, pole[3])
+                    #bot.send_message(message.from_user.id, pole[2])
+                n += 3
+
+            if (numbers[0] + numbers[1] + numbers[2] == player2 * 3) or\
+                (numbers[3] + numbers[4] + numbers[5] == player2 * 3) or\
+                (numbers[6] + numbers[7] + numbers[8] == player2 * 3) or\
+                (numbers[0] + numbers[3] + numbers[6] == player2 * 3) or\
+                (numbers[1] + numbers[4] + numbers[7] == player2 * 3) or\
+                (numbers[2] + numbers[5] + numbers[8] == player2 * 3) or\
+                (numbers[0] + numbers[4] + numbers[8] == player2 * 3) or\
+                (numbers[2] + numbers[4] + numbers[6] == player2 * 3):
+                bot.send_message(message.from_user.id,'Congratulations! You are an IDIOT! Want to play again?')
+                bot.register_next_step_handler(message, start)
+            elif numbers.count(' ') == 0:
+                bot.send_message(message.from_user.id,'Parity! Want to play again? Yes / No')
+                bot.register_next_step_handler(message, other)
+            else:
+                bot.send_message(message.from_user.id,"Please input the number where you want to put {}".format(player1))
+                bot.register_next_step_handler(message, game1)
+                
+def other(message):
+    if message.text.lower() == 'no':
+        bot.send_photo(message.from_user.id, 'http://www.избавься.рф/image/362897/nyitik.jpg')
+    else:
+        bot.register_next_step_handler(message, start)
+
+bot.polling(none_stop=True, interval=0)
