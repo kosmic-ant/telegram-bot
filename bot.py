@@ -1,4 +1,3 @@
-from telebot import types
 import telebot, random
 bot = telebot.TeleBot('808136847:AAHLq-11VcMuPKWZvStE60_-0MgRg_Lqabs')
 
@@ -120,6 +119,14 @@ def game1(message):
                 position2 = 8
             elif numbers[7] == player1 and numbers[4] == player1 and numbers[1] == ' ':
                 position2 = 2
+            elif numbers[0] == player1 and numbers[8] == player1 and numbers[3] == ' ':
+                position2 = 4
+            elif numbers[0] == player1 and numbers[8] == player1 and numbers[5] == ' ':
+                position2 = 6
+            elif numbers[2] == player1 and numbers[6] == player1 and numbers[3] == ' ':
+                position2 = 4
+            elif numbers[2] == player1 and numbers[6] == player1 and numbers[5] == ' ':
+                position2 = 6
             elif numbers[4] != ' ' and numbers[0] == ' ':
                 position2 = 1
             elif numbers[4] != ' ' and numbers[2] == ' ':
