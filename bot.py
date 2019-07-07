@@ -1,3 +1,4 @@
+from telebot import types
 import telebot, random
 bot = telebot.TeleBot('808136847:AAHLq-11VcMuPKWZvStE60_-0MgRg_Lqabs')
 
