@@ -3,7 +3,9 @@ bot = telebot.TeleBot('808136847:AAHLq-11VcMuPKWZvStE60_-0MgRg_Lqabs')
 isRunning = False
 isRunning2 = False
 if not isRunning:
-    bot.send_message(message.from_user.id, "Please input start or go")
+    def zerolevel(message):
+        bot.send_message(message.from_user.id, "Please input start or go")
+        bot.register_next_step_handler(message, start)
 
 @bot.message_handler(commands=['start', 'go'])
 
