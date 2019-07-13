@@ -252,4 +252,4 @@ def other(message):
     else:
         bot.register_next_step_handler(message, start)
 
-bot.polling(poll_interval=1.0)
+bot.start_polling(poll_interval=1.0)
