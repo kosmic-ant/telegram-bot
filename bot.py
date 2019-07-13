@@ -251,4 +251,4 @@ def other(message):
     else:
         bot.register_next_step_handler(message, start)
 
-bot.polling(non_stop=True)
+bot.polling(none_stop=True)
