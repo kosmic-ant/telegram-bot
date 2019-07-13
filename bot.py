@@ -95,6 +95,22 @@ def game1(message):
     
             if numbers[4] == ' ':
                 position2 = 5
+            elif numbers[0] == player1 and numbers[8] == player1 and numbers[4] == player2 and numbers[1] == ' ':
+                position2 = 2
+            elif numbers[0] == player1 and numbers[8] == player1 and numbers[4] == player2 and numbers[3] == ' ':
+                position2 = 4
+            elif numbers[0] == player1 and numbers[8] == player1 and numbers[4] == player2 and numbers[5] == ' ':
+                position2 = 6
+            elif numbers[0] == player1 and numbers[8] == player1 and numbers[4] == player2 and numbers[7] == ' ':
+                position2 = 8
+            elif numbers[2] == player1 and numbers[6] == player1 and numbers[4] == player2 and numbers[1] == ' ':
+                position2 = 2
+            elif numbers[2] == player1 and numbers[6] == player1 and numbers[4] == player2 and numbers[3] == ' ':
+                position2 = 4
+            elif numbers[2] == player1 and numbers[6] == player1 and numbers[4] == player2 and numbers[5] == ' ':
+                position2 = 6
+            elif numbers[2] == player1 and numbers[6] == player1 and numbers[4] == player2 and numbers[7] == ' ':
+                position2 = 8
             elif numbers[0] == player1 and numbers[2] == player1 and numbers[1] == ' ':
                 position2 = 2
             elif numbers[0] == player1 and numbers[6] == player1 and numbers[3] == ' ':
@@ -119,27 +135,22 @@ def game1(message):
                 position2 = 8
             elif numbers[7] == player1 and numbers[4] == player1 and numbers[1] == ' ':
                 position2 = 2
-            elif numbers[0] == player1 and numbers[8] == player1 and numbers[3] == ' ':
-                position2 = 4
-            elif numbers[0] == player1 and numbers[8] == player1 and numbers[5] == ' ':
-                position2 = 6
-            elif numbers[2] == player1 and numbers[6] == player1 and numbers[3] == ' ':
-                position2 = 4
-            elif numbers[2] == player1 and numbers[6] == player1 and numbers[5] == ' ':
-                position2 = 6
-            elif numbers[4] != ' ' and numbers[0] == ' ':
-                position2 = 1
-            elif numbers[4] != ' ' and numbers[2] == ' ':
+            elif numbers[0] == player1 and numbers[1] == player1 and numbers[2] == ' ':
                 position2 = 3
-            elif numbers[4] != ' ' and numbers[6] == ' ':
+            elif numbers[1] == player1 and numbers[2] == player1 and numbers[0] == ' ':
+                position2 = 1
+            elif numbers[0] == player1 and numbers[3] == player1 and numbers[6] == ' ':
                 position2 = 7
-            elif numbers[4] != ' ' and numbers[8] == ' ':
+            elif numbers[6] == player1 and numbers[3] == player1 and numbers[0] == ' ':
+                position2 = 1
+            elif numbers[2] == player1 and numbers[5] == player1 and numbers[8] == ' ':
                 position2 = 9
-            else:
-                position2 = random.randint(1, 9)
-
-            while numbers[position2 - 1] == player1 or numbers[position2 - 1] == player2:
-                position2 = random.randint(1, 9)
+            elif numbers[8] == player1 and numbers[5] == player1 and numbers[2] == ' ':
+                position2 = 3
+            elif numbers[6] == player1 and numbers[7] == player1 and numbers[8] == ' ':
+                position2 = 9
+            elif numbers[7] == player1 and numbers[8] == player1 and numbers[6] == ' ':
+                position2 = 7
                 
             numbers.pop(position2 - 1)
             numbers.insert(position2 - 1, player2)
@@ -178,4 +189,4 @@ def other(message):
     else:
         bot.register_next_step_handler(message, start)
 
-bot.polling(none_stop=True, interval=0)
+bot.polling(none_stop=True)
