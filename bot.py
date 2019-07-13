@@ -86,7 +86,7 @@ def game1(message):
             (numbers[0] + numbers[4] + numbers[8] == player1 * 3) or\
             (numbers[2] + numbers[4] + numbers[6] == player1 * 3):
             bot.send_message(message.from_user.id,'Congratulations! You are GENIUS! Want to play again?')
-            bot.register_next_step_handler(message, start)
+            bot.register_next_step_handler(message, other)
         elif numbers.count(' ') == 0:
             bot.send_message(message.from_user.id,'Parity! Want to play again? Yes / No')
             bot.register_next_step_handler(message, other)
@@ -236,7 +236,7 @@ def game1(message):
                 (numbers[0] + numbers[4] + numbers[8] == player2 * 3) or\
                 (numbers[2] + numbers[4] + numbers[6] == player2 * 3):
                 bot.send_message(message.from_user.id,'Congratulations! You are an IDIOT! Want to play again?')
-                bot.register_next_step_handler(message, start)
+                bot.register_next_step_handler(message, other)
             elif numbers.count(' ') == 0:
                 bot.send_message(message.from_user.id,'Parity! Want to play again? Yes / No')
                 bot.register_next_step_handler(message, other)
