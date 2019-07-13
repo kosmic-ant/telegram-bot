@@ -2,6 +2,7 @@ import telebot, random
 bot = telebot.TeleBot('808136847:AAHLq-11VcMuPKWZvStE60_-0MgRg_Lqabs')
 
 @bot.message_handler(commands=['start', 'go'])
+isRunning = False
 
 def start(message):
     global isRunning
