@@ -1,16 +1,18 @@
 import telebot, random
 bot = telebot.TeleBot('808136847:AAHLq-11VcMuPKWZvStE60_-0MgRg_Lqabs')
 
-@bot.message_handler(content_types=['text', 'document', 'audio', 'photo'])
+@bot.message_handler(commands=['start', 'go'])
 
 def start(message):
-    if message.text.lower() == '/start':
+    global isRunning
+    if not isRunning:
+        isRunning = True
         bot.send_message(message.from_user.id, 'Now your are going to play KRESTIKI NOLIKI with the most powerfull AI in the UNIRVERSE. Be prepared and try not to shit your pants')
         bot.send_message(message.from_user.id, "Please choose a marker 'X' or 'O'")
         bot.register_next_step_handler(message, game)
-    else:
-        bot.send_message(message.from_user.id, "Please enter '/Start' to play")
-        
+
+@bot.message_handler(content_types=['text', 'document', 'audio', 'photo'])
+     
 def game(message):
     global player1, player2, numbers
     if message.text.upper() == "X" or message.text.upper() == "O":
@@ -95,6 +97,48 @@ def game1(message):
     
             if numbers[4] == ' ':
                 position2 = 5
+
+            elif numbers[0] == player2 and numbers[2] == player2 and numbers[1] == ' ':
+                position2 = 2
+            elif numbers[0] == player2 and numbers[6] == player2 and numbers[3] == ' ':
+                position2 = 4
+            elif numbers[2] == player2 and numbers[8] == player2 and numbers[5] == ' ':
+                position2 = 6
+            elif numbers[6] == player2 and numbers[8] == player2 and numbers[7] == ' ':
+                position2 = 8
+            elif numbers[0] == player2 and numbers[4] == player2 and numbers[8] == ' ':
+                position2 = 9
+            elif numbers[8] == player2 and numbers[4] == player2 and numbers[0] == ' ':
+                position2 = 1
+            elif numbers[2] == player2 and numbers[4] == player2 and numbers[6] == ' ':
+                position2 = 7
+            elif numbers[6] == player2 and numbers[4] == player2 and numbers[2] == ' ':
+                position2 = 3
+            elif numbers[3] == player2 and numbers[4] == player2 and numbers[5] == ' ':
+                position2 = 6
+            elif numbers[5] == player2 and numbers[4] == player2 and numbers[3] == ' ':
+                position2 = 4
+            elif numbers[1] == player2 and numbers[4] == player2 and numbers[7] == ' ':
+                position2 = 8
+            elif numbers[7] == player2 and numbers[4] == player2 and numbers[1] == ' ':
+                position2 = 2
+            elif numbers[0] == player2 and numbers[1] == player2 and numbers[2] == ' ':
+                position2 = 3
+            elif numbers[1] == player2 and numbers[2] == player2 and numbers[0] == ' ':
+                position2 = 1
+            elif numbers[0] == player2 and numbers[3] == player2 and numbers[6] == ' ':
+                position2 = 7
+            elif numbers[6] == player2 and numbers[3] == player2 and numbers[0] == ' ':
+                position2 = 1
+            elif numbers[2] == player2 and numbers[5] == player2 and numbers[8] == ' ':
+                position2 = 9
+            elif numbers[8] == player2 and numbers[5] == player2 and numbers[2] == ' ':
+                position2 = 3
+            elif numbers[6] == player2 and numbers[7] == player2 and numbers[8] == ' ':
+                position2 = 9
+            elif numbers[7] == player2 and numbers[8] == player2 and numbers[6] == ' ':
+                position2 = 7
+
             elif numbers[0] == player1 and numbers[8] == player1 and numbers[4] == player2 and numbers[1] == ' ':
                 position2 = 2
             elif numbers[0] == player1 and numbers[8] == player1 and numbers[4] == player2 and numbers[3] == ' ':
@@ -184,8 +228,9 @@ def game1(message):
                 bot.register_next_step_handler(message, game1)
                 
 def other(message):
+    isRunning = False
     if message.text.lower() == 'no':
-        bot.send_photo(message.from_user.id, 'http://www.избавься.рф/image/362897/nyitik.jpg')
+        bot.send_photo(message.from_user.id, '**SUICIDE**')
     else:
         bot.register_next_step_handler(message, start)
 
