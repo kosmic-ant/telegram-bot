@@ -1,6 +1,9 @@
 import telebot, random
 bot = telebot.TeleBot('808136847:AAHLq-11VcMuPKWZvStE60_-0MgRg_Lqabs')
 isRunning = False
+isRunning2 = False
+if not isRunning:
+    bot.send_message(message.from_user.id, "Please input start or go")
 
 @bot.message_handler(commands=['start', 'go'])
 
@@ -15,36 +18,38 @@ def start(message):
 @bot.message_handler(content_types=['text', 'document', 'audio', 'photo'])
      
 def game(message):
-    global player1, player2, numbers
-    if message.text.upper() == "X" or message.text.upper() == "O":
-        player1 = message.text.upper()
-        
-        if player1 == 'X':
-            player2 = 'O'
-        else:
-            player2 = 'X'
-        bot.send_message(message.from_user.id, f'Great choice, looser! Now the GAME begins! Choose from 1 to 9 to place your {player1} sign')
-        numbers = [1,2,3,4,5,6,7,8,9]
-        n = 0
-        while n <= 6:
-            pole = {1: '|          |          |          |',
-                2: '-------------------', 3: 
-                '|{:^9}|{:^9}|{:^9}|'.format(numbers[n], numbers[n + 1], numbers[n + 2])}
-            if n == 6:
-                bot.send_message(message.from_user.id, pole[3])
+    global player1, player2, numbers, isRunning2
+    if not isRunning2:
+        isRunning2 = True
+        if message.text.upper() == "X" or message.text.upper() == "O":
+            player1 = message.text.upper()
+            
+            if player1 == 'X':
+                player2 = 'O'
             else:
-                bot.send_message(message.from_user.id, pole[3])
-                #bot.send_message(message.from_user.id, pole[2])
-            n += 3
-        numbers =[' ']*9
-        bot.send_message(message.from_user.id,'If you are ready to start, Player1, please, enter the number where you want to put your {}\n'.format(player1))
-        bot.register_next_step_handler(message, game1)
-    
-    elif message.text == '/Start':
-        bot.register_next_step_handler(message, start)
-    else:
-        bot.send_message(message.from_user.id, 'Wrong input, please try again')
-        bot.register_next_step_handler(message, game)
+                player2 = 'X'
+            bot.send_message(message.from_user.id, f'Great choice, looser! Now the GAME begins! Choose from 1 to 9 to place your {player1} sign')
+            numbers = [1,2,3,4,5,6,7,8,9]
+            n = 0
+            while n <= 6:
+                pole = {1: '|          |          |          |',
+                    2: '-------------------', 3: 
+                    '|{:^9}|{:^9}|{:^9}|'.format(numbers[n], numbers[n + 1], numbers[n + 2])}
+                if n == 6:
+                    bot.send_message(message.from_user.id, pole[3])
+                else:
+                    bot.send_message(message.from_user.id, pole[3])
+                    #bot.send_message(message.from_user.id, pole[2])
+                n += 3
+            numbers =[' ']*9
+            bot.send_message(message.from_user.id,'If you are ready to start, Player1, please, enter the number where you want to put your {}\n'.format(player1))
+            bot.register_next_step_handler(message, game1)
+        
+        elif message.text == '/Start':
+            bot.register_next_step_handler(message, start)
+        else:
+            bot.send_message(message.from_user.id, 'Wrong input, please try again')
+            bot.register_next_step_handler(message, game)
     
 def game1(message):
     global numbers, player1, player2
@@ -245,7 +250,9 @@ def game1(message):
                 bot.register_next_step_handler(message, game1)
                 
 def other(message):
+    global isRunning, isRunning2
     isRunning = False
+    isRunning2 = False
     if message.text.lower() == 'no':
         bot.send_photo(message.from_user.id, '**SUICIDE**')
     else:
