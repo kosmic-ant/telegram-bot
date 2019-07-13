@@ -196,6 +196,22 @@ def game1(message):
                 position2 = 9
             elif numbers[7] == player1 and numbers[8] == player1 and numbers[6] == ' ':
                 position2 = 7
+            elif numbers[1] == ' ':
+                position2 = 2
+            elif numbers[3] == ' ':
+                position2 = 4
+            elif numbers[5] == ' ':
+                position2 = 6
+            elif numbers[7] == ' ':
+                position2 = 8
+            elif numbers[0] == ' ':
+                position2 = 1
+            elif numbers[2] == ' ':
+                position2 = 3
+            elif numbers[6] == ' ':
+                position2 = 7
+            elif numbers[8] == ' ':
+                position2 = 9
                 
             numbers.pop(position2 - 1)
             numbers.insert(position2 - 1, player2)
@@ -235,4 +251,4 @@ def other(message):
     else:
         bot.register_next_step_handler(message, start)
 
-bot.polling()
+bot.polling(non_stop=True)
