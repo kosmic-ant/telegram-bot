@@ -248,8 +248,8 @@ def other(message):
     global isRunning
     isRunning = False
     if message.text.lower() == 'no':
-        bot.send_photo(message.from_user.id, '**SUICIDE**')
+        bot.send_message(message.from_user.id, '**SUICIDE**')
     else:
         bot.register_next_step_handler(message, start)
 
-bot.polling(none_stop=True)
+bot.polling(none_stop=True, interval=5)
